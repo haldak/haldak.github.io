@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://blog.hal-stim.in/2015/12/20/【搬砖存货】STM32学习中的经典解释/index.html">
 <meta property="og:site_name" content="haldak's blog">
 <meta property="og:description" content="忽然发现，从建这个blog开始到现在，近3个月的日子里，慢慢开始熟悉了markdown的语法呢。　　从小白…到现在…好吧还是小白，但是电设一个月来的经历让自己熟悉了git的各项操作。虽然STG-THEDC17里面commit次数最多的还是“update readme = =”　　以上。嘛~题外话结束。下面是STM32日常学习中，在各种神奇的地方看到的有趣解释。">
-<meta property="og:updated_time" content="2015-12-20T12:34:23.910Z">
+<meta property="og:updated_time" content="2015-12-30T05:31:07.829Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【搬砖存货】STM32学习中的经典解释">
 <meta name="twitter:description" content="忽然发现，从建这个blog开始到现在，近3个月的日子里，慢慢开始熟悉了markdown的语法呢。　　从小白…到现在…好吧还是小白，但是电设一个月来的经历让自己熟悉了git的各项操作。虽然STG-THEDC17里面commit次数最多的还是“update readme = =”　　以上。嘛~题外话结束。下面是STM32日常学习中，在各种神奇的地方看到的有趣解释。">
@@ -254,6 +254,8 @@ DM<span class="built_in">A_Cmd</span>(DM<span class="built_in">A_Channel1</span>
 <span class="constant">NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority</span> = <span class="number">2</span>; <span class="comment">// 指定抢占式优先级别0，可取0-7</span>
 <span class="constant">NVIC_InitStructure.NVIC_IRQChannelSubPriority</span> = <span class="number">1</span>; <span class="comment">// 指定响应优先级别1</span>
 </code></pre><p>　　USART1_IRQChannel的优先级最高，当前面两个人做事的时候，他都可以打断（嵌套）。<br>　　依次类推：如果按照NVIC_PriorityGroup_0这么分，那么没有阶级，只有16个阶层了。需要给各个人指定阶层编号。sub优先级的范围0-15当一个人做事的时候，另外的人不能打断他（就没有嵌套了）；当多人同时想做事的时候，按照阶层编号的排序，排名靠前的先做事。阶层编号一样的人同时想做事，那么按照Vector Table硬件排序，排名靠前的先做。</p>
+<p>#51里面一个纠结很久的关键字<br>　　以前用51写数码管的时候，经常会有如下定义：<br>    unsigned char code Duan[10] = {0x0F, x, …, 0x3A}; //数码管送段码</p>
+<p>　　可是一直不明确是什么意思。<br>　　今天查了下，备注如下：<br>　　　　code是keil C51里面的关键字，一般用于定义常量数组，意思是告诉编译说把这个数组放在ROM存储。使用ROM(程序存储器)的好处是加快读取速度，不占用系统资源。<br>　　　　单片机的数据存储器只有256B，程序存储器有64K,如果没有CODE 说明把该数组存储到数据存储器，有CODE说明把该数组存储到数据存储器，因单片机的数据器空间小，所以一般把它存储到程序存储器存储！</p>
 
       
     </div>
